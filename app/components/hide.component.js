@@ -7,7 +7,7 @@ export default class Hide extends Component {
     super(props);
     this.state = {
       timer: {
-        time: 45,
+        time: 60,
         timeout: false,
       }
     };
