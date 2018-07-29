@@ -11,18 +11,21 @@ export default class Login extends Component {
   render() {
     return (
       <View
-        style={ styles.bg }>     
-        <Image
-        source={ require('../../assets/futureIcon.jpg') }
-        style={{ height: 150}}
-        />
+        style={ styles.bg }>    
+        <View style={{ paddingVertical: 30 }}> 
+          <Image
+          source={ require('../../assets/futureIcon.jpg') }
+          style={{ height: 150 }}
+          resizeMode={'contain'}
+          />
+        </View>
         <View style={ styles.fieldsView }>
           <TextInput 
             style={ styles.fields }
             onChangeText={(text) => this.setState({text})}
             value={this.state.gameNum}
-            keyboardType = 'numeric'
-            placeholder="Game #"
+            keyboardType='numeric'
+            placeholder='Game #'
             placeholderTextColor='gray'
           />
         </View>
@@ -35,11 +38,13 @@ export default class Login extends Component {
             placeholderTextColor='gray'
           />
         </View>
-        <Button 
-          color='red'
-          title='Enter Game'
-          onPress={() => this.props.navigation.navigate('start')}
-        />
+        <View style={ styles.padded }>
+          <Button 
+            color='red'
+            title='Enter Game'
+            onPress={() => this.props.navigation.navigate('start')}
+          />
+        </View>
       </View>
     );
   }
@@ -54,7 +59,10 @@ const styles = StyleSheet.create({
     padding: 10
   },
   fieldsView: {
-    paddingVertical: 10,
+    paddingVertical: 15,
+  },
+  padded: {
+    paddingVertical: 50,
   },
   bg:{
     padding: 50,
