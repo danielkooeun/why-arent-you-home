@@ -21,6 +21,10 @@ export default class Seeker extends Component {
       gameRegion: null,
       userPosition: null,
       updater: true,
+      timer: {
+        time: 10,
+        timeout: false,
+      },
     };
   }
 
@@ -40,6 +44,7 @@ export default class Seeker extends Component {
   componentWillUnmount() {
     clearInterval(this.tracker);
     clearInterval(this.fader);
+    clearInterval(this.counter);
   }
 
   onRegionChange(region) {
@@ -74,6 +79,7 @@ export default class Seeker extends Component {
 
     this.tracker = setInterval(this._getUserLocation, 1000);
     this.fader = setInterval(this._userFade, 100);
+    this.counter = setInterval(this._countDown, 1000);
   }
 
   _getUserLocation = async () => {
@@ -92,9 +98,35 @@ export default class Seeker extends Component {
     this.setState({ updater: true });
   }
 
+  // Timer Functions
+  _countDown = async () => {
+    if (!this.state.timer.timeout)
+      this.setState({
+        timer: {
+          time: this.state.timer.time - 1,
+          timeout: this.state.timer.timeout,
+        }
+      })
+    if ( this.state.timer.time <= 0)
+      this.setState({
+        timer: {
+          time: 0,
+          timeout: true,
+        }
+      })
+    console.log(this.state.timer.time);
+  }
+
+  convertTime() {
+    let minutes = Math.floor(this.state.timer.time / 60);
+    let seconds = this.state.timer.time - minutes * 60;
+
+    return minutes + ' : ' + seconds;
+  }
+
   render() {
     return (
-      <View style={ styles.game }>
+      <View>
         { this.state.region && this.state.userPosition ? (
           <MapView
             initialRegion={ this.state.region }
@@ -119,6 +151,7 @@ export default class Seeker extends Component {
           <Text style={ styles.loading }>Loading...</Text>
           )
         }
+        <Text style={{ fontSize: 60, paddingTop: 450, textAlign: 'center' }}>  { this.convertTime() }  </Text>
       </View>
     );
   }
