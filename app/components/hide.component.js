@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { AppRegistry, TextInput, Button, View, Text, StyleSheet } from 'react-native';
+import { AppRegistry, TextInput, Button, TouchableWithoutFeedback, View, Text, StyleSheet } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 
 export default class Hide extends Component {
@@ -40,13 +40,19 @@ export default class Hide extends Component {
     return (
       <View
         style={ styles.bg }>
-        <Text style={{ paddingTop: 140, fontSize: 34, color: 'white' }}>RUN FROM HER!</Text>
+        <TouchableWithoutFeedback
+          onPress={ () => this.props.navigation.navigate('child') }
+        >
+          <View>
+            <Text style={{ paddingTop: 140, fontSize: 34, color: 'white' }}>RUN FROM HER!</Text>
+          </View>
+        </TouchableWithoutFeedback>
         <Text
           style={ styles.timer}>{this.state.timer.time} s</Text>
         <Button 
           color='red'
           title='Skip Timer'
-          onPress={() => this.props.navigation.navigate('seeker')}
+          onPress={ () => this.props.navigation.navigate('seeker') }
         />
       </View>
     );

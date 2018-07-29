@@ -17,7 +17,6 @@ export default class Seeker extends Component {
     this.state = {
       radius: 200,
       region: null,
-      gameRegionSelected: false,
       gameRegion: null,
       fade: {
         level: 1,
@@ -69,9 +68,6 @@ export default class Seeker extends Component {
     };
     this.onRegionChange(region);
     this.onGameRegionChange(region);
-    this.setState({
-      gameRegionSelected: true,
-    });
     this.state.hiders.push({
       key: 'zoe',
       position: {
@@ -167,20 +163,20 @@ export default class Seeker extends Component {
             customMapStyle={ MAP_STYLE }
             style={ styles.map }>
             {/* TODO: make relative to the latlon delta */}
-              <View>
-                <Circle
-                  center={ this.state.gameRegion }
-                  radius={ this.state.radius } 
-                  fillColor="rgba(255,65,54,0.2)"
-                  strokeColor="#FF4136"
-                />
-                <Circle
-                  center={ this.state.userPosition }
-                  radius={ this.state.radius * 0.02 } 
-                  fillColor={ `rgba(255, 255, 255, ${ this.state.fade.level })` }
-                  strokeColor="rgba(0, 0, 0, 0)"
-                />
-                <Hiders hiders={ this.state.hiders } radius={ this.state.radius } />
+            <View>
+              <Circle
+                center={ this.state.gameRegion }
+                radius={ this.state.radius } 
+                fillColor="rgba(255,65,54,0.2)"
+                strokeColor="#FF4136"
+              />
+              <Circle
+                center={ this.state.userPosition }
+                radius={ this.state.radius * 0.02 } 
+                fillColor={ `rgba(255, 255, 255, ${ this.state.fade.level })` }
+                strokeColor="rgba(0, 0, 0, 0)"
+              />
+              <Hiders hiders={ this.state.hiders } radius={ this.state.radius } />
               </View>
           </MapView>) : (
           <Text style={ styles.loading }>Searching for children...</Text>
