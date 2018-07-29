@@ -158,7 +158,7 @@ export default class Seeker extends Component {
 
   render() {
     return (
-      <View>
+      <View style={ styles.bg }>
         { this.state.region && this.state.userPosition ? (
           <MapView
             initialRegion={ this.state.region }
@@ -183,10 +183,10 @@ export default class Seeker extends Component {
                 <Hiders hiders={ this.state.hiders } radius={ this.state.radius } />
               </View>
           </MapView>) : (
-          <Text style={ styles.loading }>Loading...</Text>
+          <Text style={ styles.loading }>Searching for children...</Text>
           )
         }
-        <Text style={{ fontSize: 40, paddingTop: 430, textAlign: 'center', marginBottom: 30 }}>
+        <Text style={{ color: 'white', fontSize: 40, paddingTop: 430, textAlign: 'center', marginBottom: 30 }}>
           { (!this.state.timer.seconds) ? (
               `Round over!`
             ) : ((this.state.timer.seconds % 60).toString().length === 1 ? (
@@ -209,7 +209,8 @@ const styles = StyleSheet.create({
   loading: {
     textAlign: 'center',
     paddingTop: 200,
-    fontSize: 40,
+    fontSize: 36,
+    color: 'white',
   },
   map: {
     position: 'absolute',
@@ -220,7 +221,6 @@ const styles = StyleSheet.create({
     height: 400,
   },
   bg:{
-    padding: 50,
     height: '100%',
     backgroundColor: 'black'
   }
