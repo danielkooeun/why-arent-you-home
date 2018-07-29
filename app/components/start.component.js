@@ -24,7 +24,11 @@ export default class Start extends Component {
         <Button
           color='red'
           title='Ready'
+<<<<<<< HEAD
           onPress={() => this.props.navigation.navigate('hide')}
+=======
+          onPress={ () => this.props.navigation.navigate('seeker') }
+>>>>>>> c97c8c29cff89e6d613989b7fcd69a0b4b7561fc
         />
       </View>
     );
