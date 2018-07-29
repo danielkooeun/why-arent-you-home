@@ -53,13 +53,14 @@ class ModalExample extends Component {
           onRequestClose={() => {
             alert('Modal has been closed.');
           }}>
-          <View style={{margin: 50, justifyContent: 'center' }}>
+          <View style={{ margin: 50, justifyContent: 'center' }}>
             <Image
               source={{ uri: this.state.photo }}
               style={{ width: 200, height: 200, margin: 'auto' }}
             />
             <Button
               onPress={ () => this.setModalVisible(false) }
+              color='red'
               title="Close"
             />
           </View>
@@ -67,8 +68,8 @@ class ModalExample extends Component {
 
         <Button
           onPress={ () => this.setModalVisible(true) }
-          color={ `rgba(255,65,54, 0.5)` }
-          title={ `${this.state.name} search` }
+          color='red'
+          title={ `Hunt down ${this.state.name}!` }
         />
       </View>
     );
