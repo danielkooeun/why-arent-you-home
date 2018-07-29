@@ -204,7 +204,7 @@ export default class Child extends Component {
           )
         }
         <TouchableWithoutFeedback
-          onPress={ this.playSound }
+          onPress={ () => console.log('asdf') }
         >
           <View>
             <Text style={{ color: 'white', fontSize: 40, paddingTop: 430, textAlign: 'center', marginBottom: 30 }}>
@@ -220,6 +220,11 @@ export default class Child extends Component {
             </Text>
           </View>
         </TouchableWithoutFeedback>
+        <Button
+          onPress={ () => this.props.navigation.navigate('start') }
+          title="CAUGHT"
+          color="red"
+        />
       </View>
     );
   }
