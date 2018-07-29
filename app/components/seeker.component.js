@@ -25,16 +25,10 @@ export default class Seeker extends Component {
   }
 
   componentWillMount() {
+    this._getLocationAsync();
   }
 
   componentDidMount() {
-    if (Platform.OS === 'android' && !Constants.isDevice) {
-      this.setState({
-        errorMessage: 'Oops, this will not work on Sketch in an Android emulator. Try it on your device!',
-      });
-    } else {
-      this._getLocationAsync();
-    }
   }
 
   componentWillUnmount() {
@@ -138,4 +132,9 @@ const styles = StyleSheet.create({
     bottom: 0,
     height: 400,
   },
+  bg:{
+    padding: 50,
+    height: '100%',
+    backgroundColor: 'black'
+  }
 });

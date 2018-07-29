@@ -3,6 +3,8 @@ import { createStackNavigator } from 'react-navigation';
 import StartScreen from './screens/start.screen';
 import LoginScreen from './screens/login.screen';
 import SeekerScreen from './screens/seeker.screen';
+import HideScreen from './screens/hide.screen';
+
 
 const start = {
   screen: StartScreen,
@@ -25,11 +27,19 @@ const seeker = {
   }
 };
 
+const hide = {
+  screen: HideScreen,
+  navigationOptions:{
+    header: null
+  }
+};
+
 const AppNavigator = createStackNavigator(
   {
     login: login,
     start: start,
-    seeker: seeker
+    seeker: seeker,
+    hide: hide
   },
   {
     initialRouteName: 'login',
