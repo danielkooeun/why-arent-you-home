@@ -20,7 +20,7 @@ export default class Start extends Component {
         <Text>User Name</Text>
         <Button
           title='Ready'
-          onPress={() => this.props.navigation.navigate('seeker')}
+          onPress={ () => this.props.navigation.navigate('seeker') }
         />
       </View>
     );

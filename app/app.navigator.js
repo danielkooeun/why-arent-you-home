@@ -3,33 +3,42 @@ import { createStackNavigator } from 'react-navigation';
 import StartScreen from './screens/start.screen';
 import LoginScreen from './screens/login.screen';
 import SeekerScreen from './screens/seeker.screen';
+import LocationScreen from './screens/location.screen';
 
 const start = {
   screen: StartScreen,
-  navigationOptions:{
+  navigationOptions: {
     header: null
   }
 };
 
 const login = {
   screen: LoginScreen,
-  navigationOptions:{
+  navigationOptions: {
     header: null
   }
 };
 
 const seeker = {
   screen: SeekerScreen,
-  navigationOptions:{
+  navigationOptions: {
+    header: null
+  }
+};
+
+const location = {
+  screen: LocationScreen,
+  navigationOptions: {
     header: null
   }
 };
 
 const AppNavigator = createStackNavigator(
   {
-    login: login,
-    start: start,
-    seeker: seeker
+    login,
+    start,
+    seeker,
+    location,
   },
   {
     initialRouteName: 'login',

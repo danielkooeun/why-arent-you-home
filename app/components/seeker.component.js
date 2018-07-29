@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
-import { StyleSheet, Platform, Text, View } from 'react-native';
+import { StyleSheet, FlatList, Platform, Text, View } from 'react-native';
 import MapView, { Circle, AnimatedRegion, Animated } from 'react-native-maps';
 import { Constants, Location, Permissions } from 'expo';
+
+import Hiders from './hider.viewer.component';
 
 const latitudeDelta = 0.004;
 const longitudeDelta = 0.005;
 
-let FADE_LVL = 1;
-let FADE_CHANGE = false;
+
 
 export default class Seeker extends Component {
   constructor(props) {
@@ -19,12 +20,30 @@ export default class Seeker extends Component {
       region: null,
       gameRegionSelected: false,
       gameRegion: null,
+      fade: {
+        level: 1,
+        change: false,
+      },
       userPosition: null,
       updater: true,
       timer: {
         time: 10,
         timeout: false,
       },
+      hiders: [
+        {
+          key: 'zoe',
+          position: {
+            latitude: 43.658,
+            longitude: -79.399,
+          },
+          fade: {
+            level: 0.5,
+            change: true,
+          },
+          photo: 'https://wallpapersultra.net/wp-content/uploads/Funny-Pictures.jpg',
+        }
+      ],
     };
   }
 
@@ -42,9 +61,6 @@ export default class Seeker extends Component {
   }
 
   componentWillUnmount() {
-    clearInterval(this.tracker);
-    clearInterval(this.fader);
-    clearInterval(this.counter);
   }
 
   onRegionChange(region) {
@@ -76,10 +92,22 @@ export default class Seeker extends Component {
       gameRegionSelected: true,
     });
     console.log(location);
+    await _intervalSetters();
+  }
 
+  _intervalSetters() {
     this.tracker = setInterval(this._getUserLocation, 1000);
-    this.fader = setInterval(this._userFade, 100);
     this.counter = setInterval(this._countDown, 1000);
+    this.fader = setInterval(this._userFade.bind(null, this.state.fade), 100);
+    this.intervals = [];
+    this.state.hiders.forEach((player) => this.intervals.push(setInterval(this._userFade.bind(null, player.fade), 100)));
+  }
+
+  _intervalDisablers () {
+    clearInterval(this.tracker);
+    clearInterval(this.fader);
+    clearInterval(this.counter);
+    this.intervals.forEach((interval) => clearInterval(interval));
   }
 
   _getUserLocation = async () => {
@@ -87,13 +115,13 @@ export default class Seeker extends Component {
     this.setState({ userPosition: location.coords });
   }
 
-  _userFade = async () => {
-    if (FADE_CHANGE) {
-      FADE_LVL += 0.05;
-      if (FADE_LVL >= 1) FADE_CHANGE = false;
+  _userFade = async (fade) => {
+    if (fade.change) {
+      fade.level += 0.05;
+      if (fade.level >= 1) fade.change = false;
     } else {
-      FADE_LVL -= 0.05;
-      if (FADE_LVL <= 0) FADE_CHANGE = true;
+      fade.level -= 0.05;
+      if (fade.level <= 0) fade.change = true;
     }
     this.setState({ updater: true });
   }
@@ -143,9 +171,10 @@ export default class Seeker extends Component {
                 <Circle
                   center={ this.state.userPosition }
                   radius={ this.state.radius * 0.02 } 
-                  fillColor={ `rgba(0, 0, 0, ${ FADE_LVL })` }
+                  fillColor={ `rgba(0, 0, 0, ${ this.state.fade.level })` }
                   strokeColor="rgba(0, 0, 0, 0)"
                 />
+                <Hiders hiders={ this.state.hiders } radius={ this.state.radius } />
               </View>
           </MapView>) : (
           <Text style={ styles.loading }>Loading...</Text>
