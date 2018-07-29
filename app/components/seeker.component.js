@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, FlatList, Platform, Text, View } from 'react-native';
-import MapView, { Circle, AnimatedRegion, Animated } from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE, Circle, AnimatedRegion, Animated } from 'react-native-maps';
 import { Constants, Location, Permissions } from 'expo';
 
-import Hiders from './hider.viewer.component';
+import { Hiders, HiderLocations } from './hider.viewer.component';
 
+const MAP_STYLE = require('../../assets/mapStyle');
 const latitudeDelta = 0.004;
 const longitudeDelta = 0.005;
-
-
 
 export default class Seeker extends Component {
   constructor(props) {
@@ -27,23 +26,10 @@ export default class Seeker extends Component {
       userPosition: null,
       updater: true,
       timer: {
-        time: 10,
+        seconds: 15,
         timeout: false,
       },
-      hiders: [
-        {
-          key: 'zoe',
-          position: {
-            latitude: 43.658,
-            longitude: -79.399,
-          },
-          fade: {
-            level: 0.5,
-            change: true,
-          },
-          photo: 'https://wallpapersultra.net/wp-content/uploads/Funny-Pictures.jpg',
-        }
-      ],
+      hiders: [],
     };
   }
 
@@ -55,6 +41,7 @@ export default class Seeker extends Component {
   }
 
   componentWillUnmount() {
+    this._intervalDisablers();
   }
 
   onRegionChange(region) {
@@ -85,8 +72,32 @@ export default class Seeker extends Component {
     this.setState({
       gameRegionSelected: true,
     });
+    this.state.hiders.push({
+      key: 'zoe',
+      position: {
+        latitude: this.state.gameRegion.latitude + 0.0002,
+        longitude: this.state.gameRegion.longitude - 0.0002,
+      },
+      fade: {
+        level: 0.5,
+        change: true,
+      },
+      photo: 'https://wallpapersultra.net/wp-content/uploads/Funny-Pictures.jpg',
+    });
+    this.state.hiders.push({
+      key: 'erick=',
+      position: {
+        latitude: this.state.gameRegion.latitude + 0.00012,
+        longitude: this.state.gameRegion.longitude + 0.0001,
+      },
+      fade: {
+        level: 0.7,
+        change: false,
+      },
+      photo: 'https://wallpapersultra.net/wp-content/uploads/Funny-Pictures.jpg',
+    });
     console.log(location);
-    await _intervalSetters();
+    await this._intervalSetters();
   }
 
   _intervalSetters() {
@@ -122,28 +133,27 @@ export default class Seeker extends Component {
 
   // Timer Functions
   _countDown = async () => {
-    if (!this.state.timer.timeout)
+    if (this.state.timer.seconds <= 0) {
       this.setState({
         timer: {
-          time: this.state.timer.time - 1,
-          timeout: this.state.timer.timeout,
-        }
-      })
-    if ( this.state.timer.time <= 0)
-      this.setState({
-        timer: {
-          time: 0,
           timeout: true,
         }
-      })
-    console.log(this.state.timer.time);
+      });
+      setTimeout(() => this.setState({ timer: { seconds: 10, timeout: false }, radius: this.state.radius - 20 }), 2000);
+    } else {
+      this.setState({
+        timer: {
+          seconds: this.state.timer.seconds - 1,
+          timeout: false,
+        }
+      });
+    }
   }
 
   convertTime() {
-    let minutes = Math.floor(this.state.timer.time / 60);
-    let seconds = this.state.timer.time - minutes * 60;
-
-    return minutes + ' : ' + seconds;
+    let minutes = Math.floor(this.state.timer.seconds / 60);
+    let seconds = ((this.state.timer.seconds - minutes) % 60).toString();
+    return seconds.length === 1 ? `${minutes}:0${seconds}` : `${minutes}:${seconds}`;
   }
 
   render() {
@@ -153,19 +163,21 @@ export default class Seeker extends Component {
           <MapView
             initialRegion={ this.state.region }
             onRegionChange={ (region) => this.onRegionChange(region) }
+            provider={ PROVIDER_GOOGLE }
+            customMapStyle={ MAP_STYLE }
             style={ styles.map }>
             {/* TODO: make relative to the latlon delta */}
               <View>
                 <Circle
                   center={ this.state.gameRegion }
                   radius={ this.state.radius } 
-                  fillColor="rgba(135, 206, 250, 0.2)"
-                  strokeColor="#4682b4"
+                  fillColor="rgba(255,65,54,0.2)"
+                  strokeColor="#FF4136"
                 />
                 <Circle
                   center={ this.state.userPosition }
                   radius={ this.state.radius * 0.02 } 
-                  fillColor={ `rgba(0, 0, 0, ${ this.state.fade.level })` }
+                  fillColor={ `rgba(255, 255, 255, ${ this.state.fade.level })` }
                   strokeColor="rgba(0, 0, 0, 0)"
                 />
                 <Hiders hiders={ this.state.hiders } radius={ this.state.radius } />
@@ -174,7 +186,17 @@ export default class Seeker extends Component {
           <Text style={ styles.loading }>Loading...</Text>
           )
         }
-        <Text style={{ fontSize: 60, paddingTop: 450, textAlign: 'center' }}>  { this.convertTime() }  </Text>
+        <Text style={{ fontSize: 60, paddingTop: 450, textAlign: 'center' }}>
+          { (!this.state.timer.seconds) ? (
+              `Round is over!`
+            ) : ((this.state.timer.seconds % 60).toString().length === 1 ? (
+              `${Math.floor(this.state.timer.seconds / 60)}:0${this.state.timer.seconds % 60}`
+              ) : (
+                `${Math.floor(this.state.timer.seconds / 60)}:${this.state.timer.seconds % 60}`
+              )
+            )
+          }
+        </Text>
       </View>
     );
   }
