@@ -36,27 +36,6 @@ export default class Child extends Component {
     this._getLocationAsync();
   }
 
-  componentDidMount() {
-    Audio.setIsEnabledAsync(true);
-    Audio.setAudioModeAsync({
-      allowsRecordingIOS: true,
-      interruptionModeIOS: Audio.INTERRUPTION_MODE_IOS_DO_NOT_MIX,
-      playsInSilentLockedModeIOS: true,
-      playsInSilentModeIOS: true,
-      shouldDuckAndroid: true,
-      interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
-    });
-    this._askForAudioPermission();
-  }
-
-  _askForAudioPermission = async () => {
-    const response = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
-    this.setState({
-      haveRecordingPermissions: response.status === 'granted',
-    });
-    console.log("PERMISSION:", JSON.stringify(this.state.haveRecordingPermissions));
-  };
-
   componentWillUnmount() {
     this._intervalDisablers();
   }
@@ -67,19 +46,6 @@ export default class Child extends Component {
 
   onGameRegionChange(gameRegion) {
     this.setState({ gameRegion });
-  }
-
-  playSound = async () => {
-    const ALARM = new Audio.sound();
-    try {
-      await ALARM.loadAsync(require('../../assets/alarm.mp3'));
-      this.audioPlayer1  = ALARM;
-      this.audioPlayer1.playAsync();
-      // this.audioPlayer1.setPositionAsync(0);
-      // this.audioPlayer1.setRateAsync(3, false);
-    } catch (error) {
-    // An error occurred!
-    } 
   }
 
   _getLocationAsync = async () => {
