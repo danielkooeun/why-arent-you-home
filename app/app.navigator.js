@@ -4,7 +4,6 @@ import StartScreen from './screens/start.screen';
 import LoginScreen from './screens/login.screen';
 import SeekerScreen from './screens/seeker.screen';
 import HideScreen from './screens/hide.screen';
-import LocationScreen from './screens/location.screen';
 
 const start = {
   screen: StartScreen,
@@ -27,13 +26,6 @@ const seeker = {
   }
 };
 
-const location = {
-  screen: LocationScreen,
-  navigationOptions: {
-    header: null
-  }
-};
-
 const hide = {
   screen: HideScreen,
   navigationOptions:{
@@ -46,7 +38,6 @@ const AppNavigator = createStackNavigator(
     login,
     start,
     seeker,
-    location,
     hide,
   },
   {

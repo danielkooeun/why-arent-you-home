@@ -40,6 +40,7 @@ export default class Hide extends Component {
     return (
       <View
         style={ styles.bg }>
+        <Text style={{ paddingTop: 140, fontSize: 34, color: 'white' }}>RUN FROM HER!</Text>
         <Text
           style={ styles.timer}>{this.state.timer.time} s</Text>
         <Button 
@@ -56,7 +57,7 @@ const styles = StyleSheet.create({
   timer: {
     color: 'white',
     padding: 10,
-    paddingTop: 200,
+    paddingTop: 40,
     paddingBottom: 100,
     textAlign: 'center',
     fontSize: 36

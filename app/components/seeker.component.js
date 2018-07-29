@@ -82,10 +82,10 @@ export default class Seeker extends Component {
         level: 0.5,
         change: true,
       },
-      photo: 'https://wallpapersultra.net/wp-content/uploads/Funny-Pictures.jpg',
+      photo: 'https://image.slidesharecdn.com/designhighlyavailableandsecuresystem-170405122608/95/design-highly-available-and-secure-system-23-638.jpg?cb=1491395239',
     });
     this.state.hiders.push({
-      key: 'erick=',
+      key: 'erick',
       position: {
         latitude: this.state.gameRegion.latitude + 0.00012,
         longitude: this.state.gameRegion.longitude + 0.0001,
@@ -94,7 +94,7 @@ export default class Seeker extends Component {
         level: 0.7,
         change: false,
       },
-      photo: 'https://wallpapersultra.net/wp-content/uploads/Funny-Pictures.jpg',
+      photo: 'https://image.freepik.com/free-photo/brick-wall-corner_19-125294.jpg',
     });
     console.log(location);
     await this._intervalSetters();
@@ -112,7 +112,7 @@ export default class Seeker extends Component {
     clearInterval(this.tracker);
     clearInterval(this.fader);
     clearInterval(this.counter);
-    this.intervals.forEach((interval) => clearInterval(interval));
+    if (this.intervals) this.intervals.forEach((interval) => clearInterval(interval));
   }
 
   _getUserLocation = async () => {
@@ -186,9 +186,9 @@ export default class Seeker extends Component {
           <Text style={ styles.loading }>Loading...</Text>
           )
         }
-        <Text style={{ fontSize: 60, paddingTop: 450, textAlign: 'center' }}>
+        <Text style={{ fontSize: 40, paddingTop: 430, textAlign: 'center', marginBottom: 30 }}>
           { (!this.state.timer.seconds) ? (
-              `Round is over!`
+              `Round over!`
             ) : ((this.state.timer.seconds % 60).toString().length === 1 ? (
               `${Math.floor(this.state.timer.seconds / 60)}:0${this.state.timer.seconds % 60}`
               ) : (
@@ -197,6 +197,9 @@ export default class Seeker extends Component {
             )
           }
         </Text>
+        { this.state.hiders.length > 0 &&
+          <HiderLocations hiders={ this.state.hiders } navigation={ this.props.navigation }/>
+        }
       </View>
     );
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   View,
-  Image
+  Text
 } from 'react-native';
 
 import Hide from '../components/hide.component';
