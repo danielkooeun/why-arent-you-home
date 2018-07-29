@@ -56,7 +56,8 @@ class ModalExample extends Component {
           <View style={{ margin: 50, justifyContent: 'center' }}>
             <Image
               source={{ uri: this.state.photo }}
-              style={{ width: 200, height: 200, margin: 'auto' }}
+              style={{ height: 200, margin: 'auto'}}
+              resizeMode={'contain'}
             />
             <Button
               onPress={ () => this.setModalVisible(false) }
